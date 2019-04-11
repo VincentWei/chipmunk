@@ -3,6 +3,9 @@ cmake_policy(SET CMP0001 NEW) # don't use MAKE_BACKWARDS_COMPATIBILITY but polic
 
 project(chipmunk)
 
+SET(PROJECT_NAME chipmunk)
+SET(PROJECT_VERSION 5.3.1)
+
 # to change the prefix, run cmake with the parameter:
 #   -D CMAKE_INSTALL_PREFIX=/my/prefix
 
@@ -60,3 +63,17 @@ endif(BUILD_RUBY_EXT)
 
 #pkgconfig
 install (FILES "${PROJECT_BINARY_DIR}/chipmunk.pc" DESTINATION lib/pkgconfig)
+
+# Packing stuff
+SET(CPACK_PACKAGE_VENDOR "FMSoft")
+SET(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "a simple, lightweight, fast and portable 2D rigid body physics library written in C")
+SET(CPACK_SOURCE_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${PROJECT_VERSION}")
+SET(CPACK_SOURCE_GENERATOR "TGZ")
+SET(CPACK_SOURCE_IGNORE_FILES
+      "/auto/;/cmake/;/.svn/;/.git/;/.bzr/;/CMakeFiles/;/_CPack_Packages/;CMakeCache.txt$;
+      ~$;.swp$;.cmake$;
+      ${CPACK_SOURCE_IGNORE_FILES}")
+
+INCLUDE(CPack)
+

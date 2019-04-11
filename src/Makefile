@@ -48,13 +48,56 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1
+CMAKE_SOURCE_DIR = /srv/devel/build-minigui-4.0/3rd-party/chipmunk
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1
+CMAKE_BINARY_DIR = /srv/devel/build-minigui-4.0/3rd-party/chipmunk
 
 #=============================================================================
 # Targets provided globally by CMake.
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
+# Special rule for the target package
+package: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && /usr/bin/cpack --config ./CPackConfig.cmake
+.PHONY : package
+
+# Special rule for the target package
+package/fast: package
+
+.PHONY : package/fast
+
+# Special rule for the target package_source
+package_source:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && /usr/bin/cpack --config ./CPackSourceConfig.cmake /srv/devel/build-minigui-4.0/3rd-party/chipmunk/CPackSourceConfig.cmake
+.PHONY : package_source
+
+# Special rule for the target package_source
+package_source/fast: package_source
+
+.PHONY : package_source/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
 
 # Special rule for the target install
 install: preinstall
@@ -68,27 +111,6 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -99,17 +121,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: install/strip
-
-.PHONY : install/strip/fast
 
 # Special rule for the target install/local
 install/local: preinstall
@@ -124,14 +135,14 @@ install/local/fast: install/local
 
 # The main all target
 all: cmake_check_build_system
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(CMAKE_COMMAND) -E cmake_progress_start /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1/CMakeFiles /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1/src/CMakeFiles/progress.marks
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1/CMakeFiles 0
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(CMAKE_COMMAND) -E cmake_progress_start /srv/devel/build-minigui-4.0/3rd-party/chipmunk/CMakeFiles /srv/devel/build-minigui-4.0/3rd-party/chipmunk/src/CMakeFiles/progress.marks
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /srv/devel/build-minigui-4.0/3rd-party/chipmunk/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -141,22 +152,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/chipmunk.dir/rule:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/chipmunk.dir/rule
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/chipmunk.dir/rule
 .PHONY : src/CMakeFiles/chipmunk.dir/rule
 
 # Convenience name for target.
@@ -166,12 +177,12 @@ chipmunk: src/CMakeFiles/chipmunk.dir/rule
 
 # fast build rule for target.
 chipmunk/fast:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/build
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/build
 .PHONY : chipmunk/fast
 
 # Convenience name for target.
 src/CMakeFiles/chipmunk_static.dir/rule:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/chipmunk_static.dir/rule
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/chipmunk_static.dir/rule
 .PHONY : src/CMakeFiles/chipmunk_static.dir/rule
 
 # Convenience name for target.
@@ -181,7 +192,7 @@ chipmunk_static: src/CMakeFiles/chipmunk_static.dir/rule
 
 # fast build rule for target.
 chipmunk_static/fast:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/build
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/build
 .PHONY : chipmunk_static/fast
 
 chipmunk.o: chipmunk.c.o
@@ -190,8 +201,8 @@ chipmunk.o: chipmunk.c.o
 
 # target to build an object file
 chipmunk.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/chipmunk.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/chipmunk.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/chipmunk.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/chipmunk.c.o
 .PHONY : chipmunk.c.o
 
 chipmunk.i: chipmunk.c.i
@@ -200,8 +211,8 @@ chipmunk.i: chipmunk.c.i
 
 # target to preprocess a source file
 chipmunk.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/chipmunk.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/chipmunk.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/chipmunk.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/chipmunk.c.i
 .PHONY : chipmunk.c.i
 
 chipmunk.s: chipmunk.c.s
@@ -210,8 +221,8 @@ chipmunk.s: chipmunk.c.s
 
 # target to generate assembly for a file
 chipmunk.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/chipmunk.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/chipmunk.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/chipmunk.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/chipmunk.c.s
 .PHONY : chipmunk.c.s
 
 constraints/cpConstraint.o: constraints/cpConstraint.c.o
@@ -220,8 +231,8 @@ constraints/cpConstraint.o: constraints/cpConstraint.c.o
 
 # target to build an object file
 constraints/cpConstraint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpConstraint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpConstraint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpConstraint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpConstraint.c.o
 .PHONY : constraints/cpConstraint.c.o
 
 constraints/cpConstraint.i: constraints/cpConstraint.c.i
@@ -230,8 +241,8 @@ constraints/cpConstraint.i: constraints/cpConstraint.c.i
 
 # target to preprocess a source file
 constraints/cpConstraint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpConstraint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpConstraint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpConstraint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpConstraint.c.i
 .PHONY : constraints/cpConstraint.c.i
 
 constraints/cpConstraint.s: constraints/cpConstraint.c.s
@@ -240,8 +251,8 @@ constraints/cpConstraint.s: constraints/cpConstraint.c.s
 
 # target to generate assembly for a file
 constraints/cpConstraint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpConstraint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpConstraint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpConstraint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpConstraint.c.s
 .PHONY : constraints/cpConstraint.c.s
 
 constraints/cpDampedRotarySpring.o: constraints/cpDampedRotarySpring.c.o
@@ -250,8 +261,8 @@ constraints/cpDampedRotarySpring.o: constraints/cpDampedRotarySpring.c.o
 
 # target to build an object file
 constraints/cpDampedRotarySpring.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedRotarySpring.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedRotarySpring.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedRotarySpring.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedRotarySpring.c.o
 .PHONY : constraints/cpDampedRotarySpring.c.o
 
 constraints/cpDampedRotarySpring.i: constraints/cpDampedRotarySpring.c.i
@@ -260,8 +271,8 @@ constraints/cpDampedRotarySpring.i: constraints/cpDampedRotarySpring.c.i
 
 # target to preprocess a source file
 constraints/cpDampedRotarySpring.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedRotarySpring.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedRotarySpring.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedRotarySpring.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedRotarySpring.c.i
 .PHONY : constraints/cpDampedRotarySpring.c.i
 
 constraints/cpDampedRotarySpring.s: constraints/cpDampedRotarySpring.c.s
@@ -270,8 +281,8 @@ constraints/cpDampedRotarySpring.s: constraints/cpDampedRotarySpring.c.s
 
 # target to generate assembly for a file
 constraints/cpDampedRotarySpring.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedRotarySpring.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedRotarySpring.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedRotarySpring.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedRotarySpring.c.s
 .PHONY : constraints/cpDampedRotarySpring.c.s
 
 constraints/cpDampedSpring.o: constraints/cpDampedSpring.c.o
@@ -280,8 +291,8 @@ constraints/cpDampedSpring.o: constraints/cpDampedSpring.c.o
 
 # target to build an object file
 constraints/cpDampedSpring.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedSpring.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedSpring.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedSpring.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedSpring.c.o
 .PHONY : constraints/cpDampedSpring.c.o
 
 constraints/cpDampedSpring.i: constraints/cpDampedSpring.c.i
@@ -290,8 +301,8 @@ constraints/cpDampedSpring.i: constraints/cpDampedSpring.c.i
 
 # target to preprocess a source file
 constraints/cpDampedSpring.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedSpring.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedSpring.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedSpring.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedSpring.c.i
 .PHONY : constraints/cpDampedSpring.c.i
 
 constraints/cpDampedSpring.s: constraints/cpDampedSpring.c.s
@@ -300,8 +311,8 @@ constraints/cpDampedSpring.s: constraints/cpDampedSpring.c.s
 
 # target to generate assembly for a file
 constraints/cpDampedSpring.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedSpring.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedSpring.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpDampedSpring.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpDampedSpring.c.s
 .PHONY : constraints/cpDampedSpring.c.s
 
 constraints/cpGearJoint.o: constraints/cpGearJoint.c.o
@@ -310,8 +321,8 @@ constraints/cpGearJoint.o: constraints/cpGearJoint.c.o
 
 # target to build an object file
 constraints/cpGearJoint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGearJoint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGearJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGearJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGearJoint.c.o
 .PHONY : constraints/cpGearJoint.c.o
 
 constraints/cpGearJoint.i: constraints/cpGearJoint.c.i
@@ -320,8 +331,8 @@ constraints/cpGearJoint.i: constraints/cpGearJoint.c.i
 
 # target to preprocess a source file
 constraints/cpGearJoint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGearJoint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGearJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGearJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGearJoint.c.i
 .PHONY : constraints/cpGearJoint.c.i
 
 constraints/cpGearJoint.s: constraints/cpGearJoint.c.s
@@ -330,8 +341,8 @@ constraints/cpGearJoint.s: constraints/cpGearJoint.c.s
 
 # target to generate assembly for a file
 constraints/cpGearJoint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGearJoint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGearJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGearJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGearJoint.c.s
 .PHONY : constraints/cpGearJoint.c.s
 
 constraints/cpGrooveJoint.o: constraints/cpGrooveJoint.c.o
@@ -340,8 +351,8 @@ constraints/cpGrooveJoint.o: constraints/cpGrooveJoint.c.o
 
 # target to build an object file
 constraints/cpGrooveJoint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGrooveJoint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGrooveJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGrooveJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGrooveJoint.c.o
 .PHONY : constraints/cpGrooveJoint.c.o
 
 constraints/cpGrooveJoint.i: constraints/cpGrooveJoint.c.i
@@ -350,8 +361,8 @@ constraints/cpGrooveJoint.i: constraints/cpGrooveJoint.c.i
 
 # target to preprocess a source file
 constraints/cpGrooveJoint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGrooveJoint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGrooveJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGrooveJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGrooveJoint.c.i
 .PHONY : constraints/cpGrooveJoint.c.i
 
 constraints/cpGrooveJoint.s: constraints/cpGrooveJoint.c.s
@@ -360,8 +371,8 @@ constraints/cpGrooveJoint.s: constraints/cpGrooveJoint.c.s
 
 # target to generate assembly for a file
 constraints/cpGrooveJoint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGrooveJoint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGrooveJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpGrooveJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpGrooveJoint.c.s
 .PHONY : constraints/cpGrooveJoint.c.s
 
 constraints/cpPinJoint.o: constraints/cpPinJoint.c.o
@@ -370,8 +381,8 @@ constraints/cpPinJoint.o: constraints/cpPinJoint.c.o
 
 # target to build an object file
 constraints/cpPinJoint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPinJoint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPinJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPinJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPinJoint.c.o
 .PHONY : constraints/cpPinJoint.c.o
 
 constraints/cpPinJoint.i: constraints/cpPinJoint.c.i
@@ -380,8 +391,8 @@ constraints/cpPinJoint.i: constraints/cpPinJoint.c.i
 
 # target to preprocess a source file
 constraints/cpPinJoint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPinJoint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPinJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPinJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPinJoint.c.i
 .PHONY : constraints/cpPinJoint.c.i
 
 constraints/cpPinJoint.s: constraints/cpPinJoint.c.s
@@ -390,8 +401,8 @@ constraints/cpPinJoint.s: constraints/cpPinJoint.c.s
 
 # target to generate assembly for a file
 constraints/cpPinJoint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPinJoint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPinJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPinJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPinJoint.c.s
 .PHONY : constraints/cpPinJoint.c.s
 
 constraints/cpPivotJoint.o: constraints/cpPivotJoint.c.o
@@ -400,8 +411,8 @@ constraints/cpPivotJoint.o: constraints/cpPivotJoint.c.o
 
 # target to build an object file
 constraints/cpPivotJoint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPivotJoint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPivotJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPivotJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPivotJoint.c.o
 .PHONY : constraints/cpPivotJoint.c.o
 
 constraints/cpPivotJoint.i: constraints/cpPivotJoint.c.i
@@ -410,8 +421,8 @@ constraints/cpPivotJoint.i: constraints/cpPivotJoint.c.i
 
 # target to preprocess a source file
 constraints/cpPivotJoint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPivotJoint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPivotJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPivotJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPivotJoint.c.i
 .PHONY : constraints/cpPivotJoint.c.i
 
 constraints/cpPivotJoint.s: constraints/cpPivotJoint.c.s
@@ -420,8 +431,8 @@ constraints/cpPivotJoint.s: constraints/cpPivotJoint.c.s
 
 # target to generate assembly for a file
 constraints/cpPivotJoint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPivotJoint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPivotJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpPivotJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpPivotJoint.c.s
 .PHONY : constraints/cpPivotJoint.c.s
 
 constraints/cpRatchetJoint.o: constraints/cpRatchetJoint.c.o
@@ -430,8 +441,8 @@ constraints/cpRatchetJoint.o: constraints/cpRatchetJoint.c.o
 
 # target to build an object file
 constraints/cpRatchetJoint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRatchetJoint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRatchetJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRatchetJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRatchetJoint.c.o
 .PHONY : constraints/cpRatchetJoint.c.o
 
 constraints/cpRatchetJoint.i: constraints/cpRatchetJoint.c.i
@@ -440,8 +451,8 @@ constraints/cpRatchetJoint.i: constraints/cpRatchetJoint.c.i
 
 # target to preprocess a source file
 constraints/cpRatchetJoint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRatchetJoint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRatchetJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRatchetJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRatchetJoint.c.i
 .PHONY : constraints/cpRatchetJoint.c.i
 
 constraints/cpRatchetJoint.s: constraints/cpRatchetJoint.c.s
@@ -450,8 +461,8 @@ constraints/cpRatchetJoint.s: constraints/cpRatchetJoint.c.s
 
 # target to generate assembly for a file
 constraints/cpRatchetJoint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRatchetJoint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRatchetJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRatchetJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRatchetJoint.c.s
 .PHONY : constraints/cpRatchetJoint.c.s
 
 constraints/cpRotaryLimitJoint.o: constraints/cpRotaryLimitJoint.c.o
@@ -460,8 +471,8 @@ constraints/cpRotaryLimitJoint.o: constraints/cpRotaryLimitJoint.c.o
 
 # target to build an object file
 constraints/cpRotaryLimitJoint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRotaryLimitJoint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRotaryLimitJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRotaryLimitJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRotaryLimitJoint.c.o
 .PHONY : constraints/cpRotaryLimitJoint.c.o
 
 constraints/cpRotaryLimitJoint.i: constraints/cpRotaryLimitJoint.c.i
@@ -470,8 +481,8 @@ constraints/cpRotaryLimitJoint.i: constraints/cpRotaryLimitJoint.c.i
 
 # target to preprocess a source file
 constraints/cpRotaryLimitJoint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRotaryLimitJoint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRotaryLimitJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRotaryLimitJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRotaryLimitJoint.c.i
 .PHONY : constraints/cpRotaryLimitJoint.c.i
 
 constraints/cpRotaryLimitJoint.s: constraints/cpRotaryLimitJoint.c.s
@@ -480,8 +491,8 @@ constraints/cpRotaryLimitJoint.s: constraints/cpRotaryLimitJoint.c.s
 
 # target to generate assembly for a file
 constraints/cpRotaryLimitJoint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRotaryLimitJoint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRotaryLimitJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpRotaryLimitJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpRotaryLimitJoint.c.s
 .PHONY : constraints/cpRotaryLimitJoint.c.s
 
 constraints/cpSimpleMotor.o: constraints/cpSimpleMotor.c.o
@@ -490,8 +501,8 @@ constraints/cpSimpleMotor.o: constraints/cpSimpleMotor.c.o
 
 # target to build an object file
 constraints/cpSimpleMotor.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSimpleMotor.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSimpleMotor.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSimpleMotor.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSimpleMotor.c.o
 .PHONY : constraints/cpSimpleMotor.c.o
 
 constraints/cpSimpleMotor.i: constraints/cpSimpleMotor.c.i
@@ -500,8 +511,8 @@ constraints/cpSimpleMotor.i: constraints/cpSimpleMotor.c.i
 
 # target to preprocess a source file
 constraints/cpSimpleMotor.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSimpleMotor.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSimpleMotor.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSimpleMotor.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSimpleMotor.c.i
 .PHONY : constraints/cpSimpleMotor.c.i
 
 constraints/cpSimpleMotor.s: constraints/cpSimpleMotor.c.s
@@ -510,8 +521,8 @@ constraints/cpSimpleMotor.s: constraints/cpSimpleMotor.c.s
 
 # target to generate assembly for a file
 constraints/cpSimpleMotor.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSimpleMotor.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSimpleMotor.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSimpleMotor.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSimpleMotor.c.s
 .PHONY : constraints/cpSimpleMotor.c.s
 
 constraints/cpSlideJoint.o: constraints/cpSlideJoint.c.o
@@ -520,8 +531,8 @@ constraints/cpSlideJoint.o: constraints/cpSlideJoint.c.o
 
 # target to build an object file
 constraints/cpSlideJoint.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSlideJoint.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSlideJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSlideJoint.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSlideJoint.c.o
 .PHONY : constraints/cpSlideJoint.c.o
 
 constraints/cpSlideJoint.i: constraints/cpSlideJoint.c.i
@@ -530,8 +541,8 @@ constraints/cpSlideJoint.i: constraints/cpSlideJoint.c.i
 
 # target to preprocess a source file
 constraints/cpSlideJoint.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSlideJoint.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSlideJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSlideJoint.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSlideJoint.c.i
 .PHONY : constraints/cpSlideJoint.c.i
 
 constraints/cpSlideJoint.s: constraints/cpSlideJoint.c.s
@@ -540,8 +551,8 @@ constraints/cpSlideJoint.s: constraints/cpSlideJoint.c.s
 
 # target to generate assembly for a file
 constraints/cpSlideJoint.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSlideJoint.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSlideJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/constraints/cpSlideJoint.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/constraints/cpSlideJoint.c.s
 .PHONY : constraints/cpSlideJoint.c.s
 
 cpArbiter.o: cpArbiter.c.o
@@ -550,8 +561,8 @@ cpArbiter.o: cpArbiter.c.o
 
 # target to build an object file
 cpArbiter.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArbiter.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArbiter.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArbiter.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArbiter.c.o
 .PHONY : cpArbiter.c.o
 
 cpArbiter.i: cpArbiter.c.i
@@ -560,8 +571,8 @@ cpArbiter.i: cpArbiter.c.i
 
 # target to preprocess a source file
 cpArbiter.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArbiter.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArbiter.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArbiter.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArbiter.c.i
 .PHONY : cpArbiter.c.i
 
 cpArbiter.s: cpArbiter.c.s
@@ -570,8 +581,8 @@ cpArbiter.s: cpArbiter.c.s
 
 # target to generate assembly for a file
 cpArbiter.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArbiter.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArbiter.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArbiter.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArbiter.c.s
 .PHONY : cpArbiter.c.s
 
 cpArray.o: cpArray.c.o
@@ -580,8 +591,8 @@ cpArray.o: cpArray.c.o
 
 # target to build an object file
 cpArray.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArray.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArray.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArray.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArray.c.o
 .PHONY : cpArray.c.o
 
 cpArray.i: cpArray.c.i
@@ -590,8 +601,8 @@ cpArray.i: cpArray.c.i
 
 # target to preprocess a source file
 cpArray.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArray.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArray.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArray.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArray.c.i
 .PHONY : cpArray.c.i
 
 cpArray.s: cpArray.c.s
@@ -600,8 +611,8 @@ cpArray.s: cpArray.c.s
 
 # target to generate assembly for a file
 cpArray.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArray.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArray.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpArray.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpArray.c.s
 .PHONY : cpArray.c.s
 
 cpBB.o: cpBB.c.o
@@ -610,8 +621,8 @@ cpBB.o: cpBB.c.o
 
 # target to build an object file
 cpBB.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBB.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBB.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBB.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBB.c.o
 .PHONY : cpBB.c.o
 
 cpBB.i: cpBB.c.i
@@ -620,8 +631,8 @@ cpBB.i: cpBB.c.i
 
 # target to preprocess a source file
 cpBB.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBB.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBB.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBB.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBB.c.i
 .PHONY : cpBB.c.i
 
 cpBB.s: cpBB.c.s
@@ -630,8 +641,8 @@ cpBB.s: cpBB.c.s
 
 # target to generate assembly for a file
 cpBB.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBB.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBB.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBB.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBB.c.s
 .PHONY : cpBB.c.s
 
 cpBody.o: cpBody.c.o
@@ -640,8 +651,8 @@ cpBody.o: cpBody.c.o
 
 # target to build an object file
 cpBody.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBody.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBody.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBody.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBody.c.o
 .PHONY : cpBody.c.o
 
 cpBody.i: cpBody.c.i
@@ -650,8 +661,8 @@ cpBody.i: cpBody.c.i
 
 # target to preprocess a source file
 cpBody.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBody.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBody.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBody.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBody.c.i
 .PHONY : cpBody.c.i
 
 cpBody.s: cpBody.c.s
@@ -660,8 +671,8 @@ cpBody.s: cpBody.c.s
 
 # target to generate assembly for a file
 cpBody.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBody.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBody.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpBody.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpBody.c.s
 .PHONY : cpBody.c.s
 
 cpCollision.o: cpCollision.c.o
@@ -670,8 +681,8 @@ cpCollision.o: cpCollision.c.o
 
 # target to build an object file
 cpCollision.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpCollision.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpCollision.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpCollision.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpCollision.c.o
 .PHONY : cpCollision.c.o
 
 cpCollision.i: cpCollision.c.i
@@ -680,8 +691,8 @@ cpCollision.i: cpCollision.c.i
 
 # target to preprocess a source file
 cpCollision.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpCollision.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpCollision.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpCollision.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpCollision.c.i
 .PHONY : cpCollision.c.i
 
 cpCollision.s: cpCollision.c.s
@@ -690,8 +701,8 @@ cpCollision.s: cpCollision.c.s
 
 # target to generate assembly for a file
 cpCollision.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpCollision.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpCollision.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpCollision.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpCollision.c.s
 .PHONY : cpCollision.c.s
 
 cpHashSet.o: cpHashSet.c.o
@@ -700,8 +711,8 @@ cpHashSet.o: cpHashSet.c.o
 
 # target to build an object file
 cpHashSet.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpHashSet.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpHashSet.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpHashSet.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpHashSet.c.o
 .PHONY : cpHashSet.c.o
 
 cpHashSet.i: cpHashSet.c.i
@@ -710,8 +721,8 @@ cpHashSet.i: cpHashSet.c.i
 
 # target to preprocess a source file
 cpHashSet.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpHashSet.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpHashSet.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpHashSet.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpHashSet.c.i
 .PHONY : cpHashSet.c.i
 
 cpHashSet.s: cpHashSet.c.s
@@ -720,8 +731,8 @@ cpHashSet.s: cpHashSet.c.s
 
 # target to generate assembly for a file
 cpHashSet.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpHashSet.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpHashSet.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpHashSet.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpHashSet.c.s
 .PHONY : cpHashSet.c.s
 
 cpPolyShape.o: cpPolyShape.c.o
@@ -730,8 +741,8 @@ cpPolyShape.o: cpPolyShape.c.o
 
 # target to build an object file
 cpPolyShape.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpPolyShape.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpPolyShape.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpPolyShape.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpPolyShape.c.o
 .PHONY : cpPolyShape.c.o
 
 cpPolyShape.i: cpPolyShape.c.i
@@ -740,8 +751,8 @@ cpPolyShape.i: cpPolyShape.c.i
 
 # target to preprocess a source file
 cpPolyShape.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpPolyShape.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpPolyShape.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpPolyShape.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpPolyShape.c.i
 .PHONY : cpPolyShape.c.i
 
 cpPolyShape.s: cpPolyShape.c.s
@@ -750,8 +761,8 @@ cpPolyShape.s: cpPolyShape.c.s
 
 # target to generate assembly for a file
 cpPolyShape.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpPolyShape.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpPolyShape.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpPolyShape.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpPolyShape.c.s
 .PHONY : cpPolyShape.c.s
 
 cpShape.o: cpShape.c.o
@@ -760,8 +771,8 @@ cpShape.o: cpShape.c.o
 
 # target to build an object file
 cpShape.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpShape.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpShape.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpShape.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpShape.c.o
 .PHONY : cpShape.c.o
 
 cpShape.i: cpShape.c.i
@@ -770,8 +781,8 @@ cpShape.i: cpShape.c.i
 
 # target to preprocess a source file
 cpShape.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpShape.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpShape.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpShape.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpShape.c.i
 .PHONY : cpShape.c.i
 
 cpShape.s: cpShape.c.s
@@ -780,8 +791,8 @@ cpShape.s: cpShape.c.s
 
 # target to generate assembly for a file
 cpShape.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpShape.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpShape.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpShape.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpShape.c.s
 .PHONY : cpShape.c.s
 
 cpSpace.o: cpSpace.c.o
@@ -790,8 +801,8 @@ cpSpace.o: cpSpace.c.o
 
 # target to build an object file
 cpSpace.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpace.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpace.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpace.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpace.c.o
 .PHONY : cpSpace.c.o
 
 cpSpace.i: cpSpace.c.i
@@ -800,8 +811,8 @@ cpSpace.i: cpSpace.c.i
 
 # target to preprocess a source file
 cpSpace.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpace.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpace.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpace.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpace.c.i
 .PHONY : cpSpace.c.i
 
 cpSpace.s: cpSpace.c.s
@@ -810,8 +821,8 @@ cpSpace.s: cpSpace.c.s
 
 # target to generate assembly for a file
 cpSpace.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpace.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpace.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpace.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpace.c.s
 .PHONY : cpSpace.c.s
 
 cpSpaceComponent.o: cpSpaceComponent.c.o
@@ -820,8 +831,8 @@ cpSpaceComponent.o: cpSpaceComponent.c.o
 
 # target to build an object file
 cpSpaceComponent.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceComponent.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceComponent.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceComponent.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceComponent.c.o
 .PHONY : cpSpaceComponent.c.o
 
 cpSpaceComponent.i: cpSpaceComponent.c.i
@@ -830,8 +841,8 @@ cpSpaceComponent.i: cpSpaceComponent.c.i
 
 # target to preprocess a source file
 cpSpaceComponent.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceComponent.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceComponent.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceComponent.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceComponent.c.i
 .PHONY : cpSpaceComponent.c.i
 
 cpSpaceComponent.s: cpSpaceComponent.c.s
@@ -840,8 +851,8 @@ cpSpaceComponent.s: cpSpaceComponent.c.s
 
 # target to generate assembly for a file
 cpSpaceComponent.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceComponent.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceComponent.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceComponent.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceComponent.c.s
 .PHONY : cpSpaceComponent.c.s
 
 cpSpaceHash.o: cpSpaceHash.c.o
@@ -850,8 +861,8 @@ cpSpaceHash.o: cpSpaceHash.c.o
 
 # target to build an object file
 cpSpaceHash.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceHash.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceHash.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceHash.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceHash.c.o
 .PHONY : cpSpaceHash.c.o
 
 cpSpaceHash.i: cpSpaceHash.c.i
@@ -860,8 +871,8 @@ cpSpaceHash.i: cpSpaceHash.c.i
 
 # target to preprocess a source file
 cpSpaceHash.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceHash.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceHash.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceHash.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceHash.c.i
 .PHONY : cpSpaceHash.c.i
 
 cpSpaceHash.s: cpSpaceHash.c.s
@@ -870,8 +881,8 @@ cpSpaceHash.s: cpSpaceHash.c.s
 
 # target to generate assembly for a file
 cpSpaceHash.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceHash.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceHash.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceHash.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceHash.c.s
 .PHONY : cpSpaceHash.c.s
 
 cpSpaceQuery.o: cpSpaceQuery.c.o
@@ -880,8 +891,8 @@ cpSpaceQuery.o: cpSpaceQuery.c.o
 
 # target to build an object file
 cpSpaceQuery.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceQuery.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceQuery.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceQuery.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceQuery.c.o
 .PHONY : cpSpaceQuery.c.o
 
 cpSpaceQuery.i: cpSpaceQuery.c.i
@@ -890,8 +901,8 @@ cpSpaceQuery.i: cpSpaceQuery.c.i
 
 # target to preprocess a source file
 cpSpaceQuery.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceQuery.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceQuery.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceQuery.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceQuery.c.i
 .PHONY : cpSpaceQuery.c.i
 
 cpSpaceQuery.s: cpSpaceQuery.c.s
@@ -900,8 +911,8 @@ cpSpaceQuery.s: cpSpaceQuery.c.s
 
 # target to generate assembly for a file
 cpSpaceQuery.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceQuery.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceQuery.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceQuery.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceQuery.c.s
 .PHONY : cpSpaceQuery.c.s
 
 cpSpaceStep.o: cpSpaceStep.c.o
@@ -910,8 +921,8 @@ cpSpaceStep.o: cpSpaceStep.c.o
 
 # target to build an object file
 cpSpaceStep.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceStep.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceStep.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceStep.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceStep.c.o
 .PHONY : cpSpaceStep.c.o
 
 cpSpaceStep.i: cpSpaceStep.c.i
@@ -920,8 +931,8 @@ cpSpaceStep.i: cpSpaceStep.c.i
 
 # target to preprocess a source file
 cpSpaceStep.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceStep.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceStep.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceStep.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceStep.c.i
 .PHONY : cpSpaceStep.c.i
 
 cpSpaceStep.s: cpSpaceStep.c.s
@@ -930,8 +941,8 @@ cpSpaceStep.s: cpSpaceStep.c.s
 
 # target to generate assembly for a file
 cpSpaceStep.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceStep.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceStep.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpSpaceStep.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpSpaceStep.c.s
 .PHONY : cpSpaceStep.c.s
 
 cpVect.o: cpVect.c.o
@@ -940,8 +951,8 @@ cpVect.o: cpVect.c.o
 
 # target to build an object file
 cpVect.c.o:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpVect.c.o
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpVect.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpVect.c.o
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpVect.c.o
 .PHONY : cpVect.c.o
 
 cpVect.i: cpVect.c.i
@@ -950,8 +961,8 @@ cpVect.i: cpVect.c.i
 
 # target to preprocess a source file
 cpVect.c.i:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpVect.c.i
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpVect.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpVect.c.i
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpVect.c.i
 .PHONY : cpVect.c.i
 
 cpVect.s: cpVect.c.s
@@ -960,8 +971,8 @@ cpVect.s: cpVect.c.s
 
 # target to generate assembly for a file
 cpVect.c.s:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpVect.c.s
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpVect.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk.dir/build.make src/CMakeFiles/chipmunk.dir/cpVect.c.s
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(MAKE) -f src/CMakeFiles/chipmunk_static.dir/build.make src/CMakeFiles/chipmunk_static.dir/cpVect.c.s
 .PHONY : cpVect.c.s
 
 # Help Target
@@ -970,13 +981,14 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install"
-	@echo "... list_install_components"
 	@echo "... edit_cache"
+	@echo "... package"
+	@echo "... package_source"
 	@echo "... chipmunk"
+	@echo "... list_install_components"
+	@echo "... install"
 	@echo "... rebuild_cache"
 	@echo "... chipmunk_static"
-	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... chipmunk.o"
 	@echo "... chipmunk.i"
@@ -1067,6 +1079,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /srv/devel/build-minigui-3.2/3rd-party/chipmunk-5.3.1 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /srv/devel/build-minigui-4.0/3rd-party/chipmunk && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
