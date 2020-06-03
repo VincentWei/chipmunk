@@ -8,6 +8,6 @@ Description: Chipmunk is a simple, lightweight, fast and portable 2D rigid body 
 Version: 5.3.1
 Requires:
 Libs: -L${libdir} -lchipmunk
-libs.private:
+libs.private: -lm
 CFlags: -I${includedir}
 
